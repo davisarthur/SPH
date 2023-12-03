@@ -1,16 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class RectangularBoundary : MonoBehaviour
+public class RectangularBoundary3D : MonoBehaviour
 {
     public Vector3 innerShellAnchor;
     public Vector3Int numPointsInnerShell;
     public float density;
     public int layers;
 
+    public Material mat1;
+    public Material mat2;
+    public Material mat3;
+    public Material mat4;
+
+    public GameObject prefab;
+
     private float linearSpacing;
-    //private Vector3[] points;
 
     public void GenerateBoundary()
     {
@@ -37,44 +41,44 @@ public class RectangularBoundary : MonoBehaviour
         // x edges
         for (int xi = 0; xi < numPoints.x; xi++) {
             points[pointIndex++] = new Vector3(anchor.x + xi * linearSpacing, anchor.y, anchor.z);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
             points[pointIndex++] = new Vector3(anchor.x + xi * linearSpacing, anchor.y + lengths.y, anchor.z);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
             points[pointIndex++] = new Vector3(anchor.x + xi * linearSpacing, anchor.y, anchor.z + lengths.z);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
             points[pointIndex++] = new Vector3(anchor.x + xi * linearSpacing, anchor.y + lengths.y, anchor.z + lengths.z);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
         }
 
         // y edges
         for (int yi = 0; yi < numPoints.y; yi++) {
             points[pointIndex++] = new Vector3(anchor.x, anchor.y + yi * linearSpacing, anchor.z);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
             points[pointIndex++] = new Vector3(anchor.x + lengths.x, anchor.y + yi * linearSpacing, anchor.z);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
             points[pointIndex++] = new Vector3(anchor.x, anchor.y + yi * linearSpacing, anchor.z + lengths.z);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
             points[pointIndex++] = new Vector3(anchor.x + lengths.x, anchor.y + yi * linearSpacing, anchor.z + lengths.z);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
         }
 
         // z edges
         for (int zi = 0; zi < numPoints.z; zi++) {
             points[pointIndex++] = new Vector3(anchor.x, anchor.y, anchor.z + zi * linearSpacing);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
             points[pointIndex++] = new Vector3(anchor.x + lengths.x, anchor.y, anchor.z + zi * linearSpacing);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
             points[pointIndex++] = new Vector3(anchor.x, anchor.y + lengths.y, anchor.z + zi * linearSpacing);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
             points[pointIndex++] = new Vector3(anchor.x + lengths.x, anchor.y + lengths.y, anchor.z + zi * linearSpacing);
-            InstantiateSphere(points[pointIndex - 1], Color.white);
+            DrawSprite(points[pointIndex - 1], mat1);
         }
 
         // bottom face
         for (int xi = 1; xi < numPoints.x - 1; xi++) {
             for (int zi = 1; zi < numPoints.z - 1; zi++) {
                 points[pointIndex++] = new Vector3(anchor.x + xi * linearSpacing, anchor.y, anchor.z + zi * linearSpacing);
-                InstantiateSphere(points[pointIndex - 1], Color.green);
+                DrawSprite(points[pointIndex - 1], mat2);
             }
         }
 
@@ -82,7 +86,7 @@ public class RectangularBoundary : MonoBehaviour
         for (int xi = 1; xi < numPoints.x - 1; xi++) {
             for (int yi = 1; yi < numPoints.y - 1; yi++) {
                 points[pointIndex++] = new Vector3(anchor.x + xi * linearSpacing, anchor.y + yi * linearSpacing, anchor.z);
-                InstantiateSphere(points[pointIndex - 1], Color.blue);
+                DrawSprite(points[pointIndex - 1], mat3);
             }
         }
 
@@ -90,7 +94,7 @@ public class RectangularBoundary : MonoBehaviour
         for (int xi = 1; xi < numPoints.x - 1; xi++) {
             for (int yi = 1; yi < numPoints.y - 1; yi++) {
                 points[pointIndex++] = new Vector3(anchor.x + xi * linearSpacing, anchor.y + yi * linearSpacing, anchor.z + lengths.z);
-                InstantiateSphere(points[pointIndex - 1], Color.blue);
+                DrawSprite(points[pointIndex - 1], mat3);
             }
         }
 
@@ -98,7 +102,7 @@ public class RectangularBoundary : MonoBehaviour
         for (int zi = 1; zi < numPoints.z - 1; zi++) {
             for (int yi = 1; yi < numPoints.y - 1; yi++) {
                 points[pointIndex++] = new Vector3(anchor.x, anchor.y + yi * linearSpacing, anchor.z + zi * linearSpacing);
-                InstantiateSphere(points[pointIndex - 1], Color.red);
+                DrawSprite(points[pointIndex - 1], mat4);
             }
         }
 
@@ -106,7 +110,7 @@ public class RectangularBoundary : MonoBehaviour
         for (int zi = 1; zi < numPoints.z - 1; zi++) {
             for (int yi = 1; yi < numPoints.y - 1; yi++) {
                 points[pointIndex++] = new Vector3(anchor.x + lengths.x, anchor.y + yi * linearSpacing, anchor.z + zi * linearSpacing);
-                InstantiateSphere(points[pointIndex - 1], Color.red);
+                DrawSprite(points[pointIndex - 1], mat4);
             }
         }
 
@@ -119,10 +123,10 @@ public class RectangularBoundary : MonoBehaviour
         }
     }
 
-    private void InstantiateSphere(Vector3 position, Color color) {
-        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sphere.transform.position = position;
-        sphere.transform.parent = transform;
-        sphere.GetComponent<MeshRenderer>().material.color = color;
+    private void DrawSprite(Vector3 position, Material mat) {
+        GameObject obj = Instantiate(prefab, position, Quaternion.identity);
+        obj.transform.position = position;
+        obj.transform.parent = transform;
+        obj.GetComponent<SpriteRenderer>().material = mat;
     }
 }
