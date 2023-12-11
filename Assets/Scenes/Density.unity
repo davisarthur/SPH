@@ -333,7 +333,7 @@ MonoBehaviour:
   baseMaterial: {fileID: 2100000, guid: 6d58d633a63224177afc94dd6b0f71da, type: 2}
   bottomLeft: {x: 0, y: 0}
   topRight: {x: 10, y: 10}
-  numParticles: 1000
+  numParticles: 2000
   smoothingLength: 1
   particlePrefab: {fileID: 7350160019764591111, guid: a0449f97319ce496f9756e619e077e24, type: 3}
 --- !u!4 &1938493389

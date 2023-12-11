@@ -19,5 +19,9 @@ public class Main2DEditor : Editor
         if (GUILayout.Button("ComputeDensity")) {
             main2D.ComputeDensity();
         }
+
+        if (GUILayout.Button("ComputeHash")) {
+            main2D.ComputeHash();
+        }
     }
 }
